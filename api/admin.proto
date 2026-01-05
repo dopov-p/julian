@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package dopov.p.julian.admin;
+
+option go_package = "./internal/pb/admin;admin";
+
+service Admin {
+  // Создать ячейку
+  rpc CreateCell(CreateCellRequest) returns (CreateCellResponse) {}
+  // Пометить ячейку удаленной
+  rpc MarkCellDeleted(MarkCellDeletedRequest) returns (MarkCellDeletedResponse) {}
+}
+
+// Вид ячейки
+enum CellKind {
+  CELL_KIND_UNSPECIFIED = 0;
+  CELL_KIND_WAREHOUSE_STORAGE = 1;
+  CELL_KIND_WAREHOUSE_HANDLE_CONTAINER = 2;
+  CELL_KIND_WAREHOUSE_BOX = 3;
+}
+
+// Тип хранимых в ячейки товаров
+enum CellContentType {
+  CELL_CONTENT_TYPE_UNSPECIFIED = 0;
+  CELL_CONTENT_TYPE_EXPENDABLE_PRODUCT = 1;
+  CELL_CONTENT_TYPE_MAIN_PRODUCT = 2;
+  CELL_CONTENT_TYPE_OVERSIZED_PRODUCT = 3;
+  CELL_CONTENT_TYPE_EXPENDABLE_LIQUID = 4;
+  CELL_CONTENT_TYPE_MAIN_LIQUID = 5;
+}
+
+message Cell {
+  string name = 1;
+  CellKind kind = 2;
+  CellContentType content_type = 3;
+  bool can_has_few_orders = 4;
+}
+
+message CreateCellRequest {
+  message Data {
+    Cell cell = 1;
+  }
+  Data data = 1;
+}
+
+message CreateCellResponse {}
+
+message MarkCellDeletedRequest {
+  message Data {
+    string name = 1;
+  }
+  Data data = 1;
+}
+
+message MarkCellDeletedResponse {}
