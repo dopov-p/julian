@@ -2,23 +2,16 @@ package cell_repo
 
 import (
 	"context"
-	"encoding/json"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/dopov-p/julian/internal/domain/dto"
 	"github.com/dopov-p/julian/internal/domain/model"
 )
 
-func (r *Repo) UpdateContents(ctx context.Context, req dto.UpdateContentsRequest) error {
-	contentsJSON, err := json.Marshal(req.Contents)
-	if err != nil {
-		return err
-	}
-
+func (r *Repo) SetSellEmpty(ctx context.Context, name string) error {
 	query := sq.Update(tableName).
-		Set("contents", contentsJSON).
+		Set("contents", nil).
 		Set("updated_at", r.timer.NowUTC()).
-		Where(sq.Eq{"id": req.ID}).
+		Where(sq.Eq{"name": name}).
 		Where(sq.Eq{"deleted_at": nil}).
 		PlaceholderFormat(sq.Dollar)
 

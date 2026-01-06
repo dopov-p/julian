@@ -42,7 +42,7 @@ func (r *Repo) Create(ctx context.Context, cell *model.Cell) error {
 		return err
 	}
 
-	_, err = r.cluster.Conn.Exec(ctx, sqlQuery, args...)
+	_, err = r.getConn(ctx).Exec(ctx, sqlQuery, args...)
 	if err != nil {
 		return err
 	}

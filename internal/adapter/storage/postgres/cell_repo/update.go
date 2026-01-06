@@ -28,13 +28,13 @@ func (r *Repo) Update(ctx context.Context, cell *model.Cell) error {
 		return err
 	}
 
-	result, err := r.cluster.Conn.Exec(ctx, sqlQuery, args...)
+	result, err := r.getConn(ctx).Exec(ctx, sqlQuery, args...)
 	if err != nil {
 		return err
 	}
 
 	if result.RowsAffected() == 0 {
-		return ErrNotFound
+		return model.ErrCellNotFound
 	}
 
 	return nil

@@ -2,8 +2,37 @@ syntax = "proto3";
 
 package dopov.p.julian.cell;
 
-option go_package = "./internal/pb/cell;cell";
+option go_package = "github.com/dopov-p/julian/internal/pb/cell;cell";
 
 service Cell {
-  //
+  // Частичное опустошение товаров из ячейки
+  rpc DevastateCellContents(DevastateCellContentsRequest) returns (DevastateCellContentsResponse) {}
+  // Полное опустошение товаров из ячейки
+  rpc FullDevastateCellContents(FullDevastateCellContentsRequest) returns (FullDevastateCellContentsResponse) {}
 }
+
+message DevastateCellContentsRequest {
+  message Data {
+    string name = 1;
+    message CellContents {
+      optional string external_order_id = 1;
+      string sku = 2;
+      uint64 quantity = 3;
+    }
+    CellContents cell_contents = 2;
+  }
+
+  Data data = 1;
+}
+
+message DevastateCellContentsResponse {}
+
+message FullDevastateCellContentsRequest {
+  message Data {
+    string name = 1;
+  }
+
+  Data data = 1;
+}
+
+message FullDevastateCellContentsResponse {}

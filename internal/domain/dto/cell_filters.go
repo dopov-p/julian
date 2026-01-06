@@ -15,4 +15,14 @@ type (
 		Name     string
 		Contents []model.CellContents
 	}
+
+	GetContentsByNameResponse struct {
+		ID       string
+		Contents []model.CellContents
+	}
+
+	UpdateContentsRequest struct {
+		ID       string
+		Contents []model.CellContents
+	}
 )

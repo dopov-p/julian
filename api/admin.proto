@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package dopov.p.julian.admin;
 
-option go_package = "./internal/pb/admin;admin";
+option go_package = "github.com/dopov-p/julian/internal/pb/admin;admin";
 
 service Admin {
   // Создать ячейку

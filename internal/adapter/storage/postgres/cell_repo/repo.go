@@ -1,12 +1,17 @@
 package cell_repo
 
 import (
+	"context"
 	"time"
 
 	"github.com/dopov-p/julian/internal/config"
+	"github.com/dopov-p/julian/internal/pkg"
 )
 
-const tableName = "cells"
+const (
+	tableName        = "cells"
+	defaultBatchSize = uint64(50)
+)
 
 type (
 	Repo struct {
@@ -25,4 +30,12 @@ func NewRepo(cluster *config.Cluster, timer timer) *Repo {
 		cluster: cluster,
 		timer:   timer,
 	}
+}
+
+func (r *Repo) getConn(ctx context.Context) pkg.Querier {
+	if tx := pkg.GetTx(ctx); tx != nil {
+		return tx
+	}
+
+	return r.cluster.Conn
 }

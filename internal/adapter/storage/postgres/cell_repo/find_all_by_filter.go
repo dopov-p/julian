@@ -9,7 +9,11 @@ import (
 	"github.com/dopov-p/julian/internal/domain/model"
 )
 
-func (r *Repo) FindAllByFilter(ctx context.Context, filter dto.FindAllCellFilter) ([]*model.Cell, error) {
+func (r *Repo) FindAllByFilter(
+	ctx context.Context,
+	filter dto.FindAllCellFilter,
+	pagination dto.Pagination,
+) ([]*model.Cell, error) {
 	query := sq.Select(
 		"id",
 		"name",
@@ -55,12 +59,30 @@ func (r *Repo) FindAllByFilter(ctx context.Context, filter dto.FindAllCellFilter
 		}
 	}
 
+	if pagination.OrderBy != nil && *pagination.OrderBy != "" {
+		order := "asc"
+		if pagination.Order != nil {
+			order = string(*pagination.Order)
+		}
+		query = query.OrderBy(*pagination.OrderBy + " " + order)
+	}
+
+	limit := defaultBatchSize
+	if pagination.Limit != nil && *pagination.Limit > 0 && *pagination.Limit <= 50 {
+		limit = *pagination.Limit
+	}
+	query = query.Limit(limit)
+
+	if pagination.Offset != nil && *pagination.Offset > 0 {
+		query = query.Offset(*pagination.Offset)
+	}
+
 	sqlQuery, args, err := query.ToSql()
 	if err != nil {
 		return nil, err
 	}
 
-	rows, err := r.cluster.Conn.Query(ctx, sqlQuery, args...)
+	rows, err := r.getConn(ctx).Query(ctx, sqlQuery, args...)
 	if err != nil {
 		return nil, err
 	}

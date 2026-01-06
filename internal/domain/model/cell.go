@@ -1,7 +1,13 @@
 package model
 
 import (
+	"errors"
 	"time"
+)
+
+var (
+	ErrCellNotFound  = errors.New("cell not found")
+	ErrEmptyContents = errors.New("empty contents")
 )
 
 type (

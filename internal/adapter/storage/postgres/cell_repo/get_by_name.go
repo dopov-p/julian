@@ -10,16 +10,26 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (r *Repo) GetByName(ctx context.Context, name string) (*model.Cell, error) {
+func (r *Repo) GetByName(ctx context.Context, name string, isDeleted bool) (*model.Cell, error) {
 	query := sq.Select(
 		"id",
 		"name",
 		"kind",
-		"content_type", "contents", "created_at", "updated_at", "deleted_at").
-		From("cells").
+		"content_type",
+		"contents",
+		"created_at",
+		"updated_at",
+		"deleted_at",
+	).
+		From(tableName).
 		Where(sq.Eq{"name": name}).
-		Where(sq.Eq{"deleted_at": nil}).
 		PlaceholderFormat(sq.Dollar)
+
+	if isDeleted {
+		query = query.Where(sq.NotEq{"deleted_at": nil})
+	} else {
+		query = query.Where(sq.Eq{"deleted_at": nil})
+	}
 
 	sqlQuery, args, err := query.ToSql()
 	if err != nil {
@@ -31,7 +41,7 @@ func (r *Repo) GetByName(ctx context.Context, name string) (*model.Cell, error) 
 		contentsJSON []byte
 	)
 
-	err = r.cluster.Conn.QueryRow(ctx, sqlQuery, args...).Scan(
+	err = r.getConn(ctx).QueryRow(ctx, sqlQuery, args...).Scan(
 		&cell.ID,
 		&cell.Name,
 		&cell.Kind,
@@ -43,7 +53,7 @@ func (r *Repo) GetByName(ctx context.Context, name string) (*model.Cell, error) 
 	)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, ErrNotFound
+			return nil, model.ErrCellNotFound
 		}
 
 		return nil, err
