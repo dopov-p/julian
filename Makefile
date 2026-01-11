@@ -1,4 +1,4 @@
-.PHONY: proto generate install-tools check-protoc install-linters check-golangci-lint install-pre-commit check-pre-commit lint lint-fix format
+.PHONY: proto generate install-tools check-protoc install-linters check-golangci-lint install-pre-commit check-pre-commit lint lint-fix format golines
 
 # Check if protoc is installed
 check-protoc:
@@ -14,6 +14,8 @@ install-tools:
 	@go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	@echo "Installing goimports for code formatting..."
 	@go install golang.org/x/tools/cmd/goimports@latest
+	@echo "Installing golines for long line formatting..."
+	@go install github.com/segmentio/golines@latest
 	@echo "Go tools installed successfully!"
 	@echo "Note: Make sure protoc is installed (see check-protoc target)"
 
@@ -75,7 +77,19 @@ lint-fix: check-golangci-lint
 	@echo "Running golangci-lint with auto-fix..."
 	@golangci-lint run --fix
 
+# Run golines to fix long lines
+golines:
+	@echo "Running golines to fix long lines..."
+	@PATH="$$(go env GOPATH)/bin:$$PATH" golines -w .
+	@echo "Long lines fixed successfully!"
+
 # Run pre-commit on all files
-format: check-pre-commit
+format: golines check-pre-commit
 	@echo "Running pre-commit on all files..."
 	@PATH="$$(go env GOPATH)/bin:$$PATH" pre-commit run --all-files
+
+migrate-up-local:
+	goose -dir ./scripts/migrations postgres "postgres://localhost:5432/db-dopov-p.julian-local" up
+
+migrate:
+	goose -dir scripts/migrations create $(F) sql

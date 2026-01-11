@@ -43,6 +43,12 @@ repos:
         language: system
         types: [go]
         pass_filenames: true
+      - id: golines
+        name: golines
+        entry: ./scripts/golines-wrapper.sh
+        language: system
+        types: [go]
+        pass_filenames: true
 
   # golangci-lint - main Go linter with auto-fix (using local installation)
   # Includes staticcheck, gofumpt, govet and many other linters

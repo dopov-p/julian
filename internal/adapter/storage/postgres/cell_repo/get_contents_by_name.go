@@ -13,7 +13,10 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (r *Repo) GetContentsByName(ctx context.Context, name string) (*dto.GetContentsByNameResponse, error) {
+func (r *Repo) GetContentsByName(
+	ctx context.Context,
+	name string,
+) (*dto.GetContentsByNameResponse, error) {
 	query := sq.Select("id", "contents").
 		From(tableName).
 		Where(sq.Eq{"name": name}).

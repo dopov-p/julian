@@ -8,9 +8,9 @@ import (
 )
 
 type Config struct {
-	Server   ServerConfig
-	Database DatabaseConfig
-	Env      string
+	GrpcServer ServerConfig
+	Database   DatabaseConfig
+	Env        string
 }
 
 type ServerConfig struct {
@@ -30,12 +30,15 @@ func Load() (*Config, error) {
 	}
 
 	cfg := &Config{
-		Server: ServerConfig{
+		GrpcServer: ServerConfig{
 			Host: getEnv("SERVER_HOST", "0.0.0.0"),
-			Port: getEnv("SERVER_PORT", "8080"),
+			Port: getEnv("SERVER_PORT", "50051"),
 		},
 		Database: DatabaseConfig{
-			DSN:     getEnv("POSTGRES_PG_DSN", "postgres://db-dopov-p.julian-local:db-dopov-p.julian-local@localhost:5432/julian-local"),
+			DSN: getEnv(
+				"POSTGRES_PG_DSN",
+				"postgres://localhost:5432/db-dopov-p.julian-local",
+			),
 			SSLMode: getEnv("POSTGRES_SSL_MODE", "disable"),
 		},
 		Env: getEnv("ENVIRONMENT", "development"),

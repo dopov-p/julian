@@ -10,7 +10,10 @@ type MarkDeletedOrActivatedReq struct {
 	IsActivate bool
 }
 
-func (u *UseCase) MarkDeletedOrActivated(ctx context.Context, req *MarkDeletedOrActivatedReq) error {
+func (u *UseCase) MarkDeletedOrActivated(
+	ctx context.Context,
+	req *MarkDeletedOrActivatedReq,
+) error {
 	if !req.IsActivate {
 		err := u.cellRepo.MarkDeleted(ctx, req.Name)
 		if err != nil {
