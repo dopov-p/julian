@@ -14,7 +14,7 @@ type DevastateContentsReq struct {
 	Contents []model.CellContents
 }
 
-func (u *UseCase) DevastateContents(ctx context.Context, req DevastateContentsReq) error {
+func (u *UseCase) DevastateContents(ctx context.Context, req *DevastateContentsReq) error {
 	if err := u.txManager.WithTx(ctx, func(txCtx context.Context) error {
 		currentCell, err := u.cellRepo.GetContentsByName(txCtx, req.Name)
 		if err != nil {

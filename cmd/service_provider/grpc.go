@@ -21,20 +21,25 @@ func (s *ServiceProvider) GetGRPCServer(ctx context.Context) interface {
 } {
 	if s.grpcServer == nil {
 		cfg := s.GetConfig()
-		port, err := strconv.Atoi(cfg.Server.Port)
+		port, err := strconv.Atoi(cfg.GrpcServer.Port)
 		if err != nil {
-			port = 8080
+			port = 50051
 		}
 
-		grpcServer := NewServer(port)
+		grpcServer := NewGrpcServer(port)
 		grpcServerInstance := grpcServer.GetGRPCServer()
 
 		// Register Admin service
-		adminService := admin_handler.NewService(s.getCellUseCase(ctx))
+		adminService := admin_handler.NewService(
+			s.getCellUseCase(ctx),
+		)
 		RegisterAdminServer(grpcServerInstance, adminService)
 
 		// Register Cell service
-		cellService := cell_handler.NewService(s.getCellUseCase(ctx))
+		cellService := cell_handler.NewService(
+			s.getCellRepo(ctx),
+			s.getCellUseCase(ctx),
+		)
 		RegisterCellServer(grpcServerInstance, cellService)
 
 		s.grpcServer = grpcServer
@@ -53,31 +58,31 @@ func RegisterCellServer(s *grpc.Server, srv *cell_handler.Service) {
 	cellPb.RegisterCellServer(s, srv)
 }
 
-type Server struct {
+type GrpcServer struct {
 	grpcServer *grpc.Server
 	port       int
 }
 
-func NewServer(port int) *Server {
+func NewGrpcServer(port int) *GrpcServer {
 	// Create gRPC server with default options
 	grpcServer := grpc.NewServer()
 
 	// Enable reflection for development (can be disabled in production)
 	reflection.Register(grpcServer)
 
-	return &Server{
+	return &GrpcServer{
 		grpcServer: grpcServer,
 		port:       port,
 	}
 }
 
 // GetGRPCServer returns the underlying grpc.Server for direct registration.
-func (s *Server) GetGRPCServer() *grpc.Server {
+func (s *GrpcServer) GetGRPCServer() *grpc.Server {
 	return s.grpcServer
 }
 
 // Start starts the gRPC server and blocks until context is cancelled.
-func (s *Server) Start(ctx context.Context) error {
+func (s *GrpcServer) Start(ctx context.Context) error {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", s.port))
 	if err != nil {
 		return fmt.Errorf("failed to listen on port %d: %w", s.port, err)
@@ -105,7 +110,7 @@ func (s *Server) Start(ctx context.Context) error {
 }
 
 // Stop gracefully stops the gRPC server.
-func (s *Server) Stop() {
+func (s *GrpcServer) Stop() {
 	log.Println("Stopping gRPC server...")
 	s.grpcServer.GracefulStop()
 }

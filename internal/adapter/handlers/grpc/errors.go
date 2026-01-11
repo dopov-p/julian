@@ -55,8 +55,8 @@ func ValidationError(errors []ValidationErrorItem) error {
 }
 
 // InternalError возвращает gRPC ошибку с кодом Internal для внутренних ошибок.
-func InternalError(message string) error {
-	return status.Error(codes.Internal, message)
+func InternalError(err error) error {
+	return status.Error(codes.Internal, err.Error())
 }
 
 // NotFoundError возвращает gRPC ошибку с кодом NotFound.

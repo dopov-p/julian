@@ -16,6 +16,10 @@ type (
 
 	cellUseCase interface {
 		Create(ctx context.Context, req *cell_usecase.CreateReq) error
+		MarkDeletedOrActivated(
+			ctx context.Context,
+			req *cell_usecase.MarkDeletedOrActivatedReq,
+		) error
 	}
 )
 

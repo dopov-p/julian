@@ -19,7 +19,8 @@ message DevastateCellContentsRequest {
       string sku = 2;
       uint64 quantity = 3;
     }
-    CellContents cell_contents = 2;
+
+    repeated CellContents cell_contents = 2;
   }
 
   Data data = 1;

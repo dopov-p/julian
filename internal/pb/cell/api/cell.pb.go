@@ -183,9 +183,9 @@ func (*FullDevastateCellContentsResponse) Descriptor() ([]byte, []int) {
 }
 
 type DevastateCellContentsRequest_Data struct {
-	state         protoimpl.MessageState                          `protogen:"open.v1"`
-	Name          string                                          `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	CellContents  *DevastateCellContentsRequest_Data_CellContents `protobuf:"bytes,2,opt,name=cell_contents,json=cellContents,proto3" json:"cell_contents,omitempty"`
+	state         protoimpl.MessageState                            `protogen:"open.v1"`
+	Name          string                                            `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	CellContents  []*DevastateCellContentsRequest_Data_CellContents `protobuf:"bytes,2,rep,name=cell_contents,json=cellContents,proto3" json:"cell_contents,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -227,7 +227,7 @@ func (x *DevastateCellContentsRequest_Data) GetName() string {
 	return ""
 }
 
-func (x *DevastateCellContentsRequest_Data) GetCellContents() *DevastateCellContentsRequest_Data_CellContents {
+func (x *DevastateCellContentsRequest_Data) GetCellContents() []*DevastateCellContentsRequest_Data_CellContents {
 	if x != nil {
 		return x.CellContents
 	}
@@ -347,7 +347,7 @@ const file_api_cell_proto_rawDesc = "" +
 	"\x04data\x18\x01 \x01(\v26.dopov.p.julian.cell.DevastateCellContentsRequest.DataR\x04data\x1a\x8a\x02\n" +
 	"\x04Data\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12h\n" +
-	"\rcell_contents\x18\x02 \x01(\v2C.dopov.p.julian.cell.DevastateCellContentsRequest.Data.CellContentsR\fcellContents\x1a\x83\x01\n" +
+	"\rcell_contents\x18\x02 \x03(\v2C.dopov.p.julian.cell.DevastateCellContentsRequest.Data.CellContentsR\fcellContents\x1a\x83\x01\n" +
 	"\fCellContents\x12/\n" +
 	"\x11external_order_id\x18\x01 \x01(\tH\x00R\x0fexternalOrderId\x88\x01\x01\x12\x10\n" +
 	"\x03sku\x18\x02 \x01(\tR\x03sku\x12\x1a\n" +

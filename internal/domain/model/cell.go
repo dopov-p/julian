@@ -32,7 +32,7 @@ const (
 type CellContents struct {
 	ExternalOrderID *string `json:"external_order_id,omitempty"`
 	SKU             string  `json:"sku"`
-	Quantity        int64   `json:"quantity"`
+	Quantity        uint64  `json:"quantity"`
 }
 
 type Cell struct {
