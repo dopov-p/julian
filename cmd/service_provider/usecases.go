@@ -10,7 +10,8 @@ func (s *ServiceProvider) getCellUseCase(ctx context.Context) *cell_usecase.UseC
 	if s.cellUseCase == nil {
 		s.cellUseCase = cell_usecase.NewUseCase(
 			s.getCellRepo(ctx),
-			s.GetDbCluster(ctx),
+			s.getGenerator(),
+			s.getTxManager(ctx),
 		)
 	}
 

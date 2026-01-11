@@ -1,0 +1,58 @@
+# Pre-commit hooks configuration
+# Install with: pre-commit install
+# Run manually with: pre-commit run --all-files
+# Run with auto-fix on all files: pre-commit run --all-files
+
+default_language_version:
+  golang: "1.25"
+
+repos:
+  # Standard pre-commit hooks for general file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: check-toml
+      - id: check-json
+      - id: check-xml
+      - id: check-symlinks
+
+  # Go formatting hooks
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.1
+    hooks:
+      - id: go-fmt
+        args: [-w]
+        types: [go]
+      - id: go-mod-tidy
+        files: ^go\.mod$
+
+  # go-imports - using local wrapper to ensure GOPATH/bin is in PATH
+  - repo: local
+    hooks:
+      - id: go-imports
+        name: go-imports
+        entry: ./scripts/go-imports-wrapper.sh
+        language: system
+        types: [go]
+        pass_filenames: true
+
+  # golangci-lint - main Go linter with auto-fix (using local installation)
+  # Includes staticcheck, gofumpt, govet and many other linters
+  # Install golangci-lint with: make install-linters
+  - repo: local
+    hooks:
+      - id: golangci-lint
+        name: golangci-lint
+        entry: ./scripts/golangci-lint-wrapper.sh
+        language: system
+        types: [go]
+        require_serial: false
+        pass_filenames: false

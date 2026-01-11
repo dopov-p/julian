@@ -8,7 +8,7 @@ service Admin {
   // Создать ячейку
   rpc CreateCell(CreateCellRequest) returns (CreateCellResponse) {}
   // Пометить ячейку удаленной
-  rpc MarkCellDeleted(MarkCellDeletedRequest) returns (MarkCellDeletedResponse) {}
+  rpc MarkCellDeletedOrActivated(MarkCellDeletedOrActivatedRequest) returns (MarkCellDeletedOrActivatedResponse) {}
 }
 
 // Вид ячейки
@@ -40,16 +40,19 @@ message CreateCellRequest {
   message Data {
     Cell cell = 1;
   }
+
   Data data = 1;
 }
 
 message CreateCellResponse {}
 
-message MarkCellDeletedRequest {
+message MarkCellDeletedOrActivatedRequest {
   message Data {
     string name = 1;
+    bool is_active = 2;
   }
+
   Data data = 1;
 }
 
-message MarkCellDeletedResponse {}
+message MarkCellDeletedOrActivatedResponse {}

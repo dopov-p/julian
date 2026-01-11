@@ -7,11 +7,12 @@
 package admin
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -281,27 +282,27 @@ func (*CreateCellResponse) Descriptor() ([]byte, []int) {
 	return file_api_admin_proto_rawDescGZIP(), []int{2}
 }
 
-type MarkCellDeletedRequest struct {
-	state         protoimpl.MessageState       `protogen:"open.v1"`
-	Data          *MarkCellDeletedRequest_Data `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+type MarkCellDeletedOrActivatedRequest struct {
+	state         protoimpl.MessageState                  `protogen:"open.v1"`
+	Data          *MarkCellDeletedOrActivatedRequest_Data `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *MarkCellDeletedRequest) Reset() {
-	*x = MarkCellDeletedRequest{}
+func (x *MarkCellDeletedOrActivatedRequest) Reset() {
+	*x = MarkCellDeletedOrActivatedRequest{}
 	mi := &file_api_admin_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *MarkCellDeletedRequest) String() string {
+func (x *MarkCellDeletedOrActivatedRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MarkCellDeletedRequest) ProtoMessage() {}
+func (*MarkCellDeletedOrActivatedRequest) ProtoMessage() {}
 
-func (x *MarkCellDeletedRequest) ProtoReflect() protoreflect.Message {
+func (x *MarkCellDeletedOrActivatedRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_api_admin_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -313,38 +314,38 @@ func (x *MarkCellDeletedRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MarkCellDeletedRequest.ProtoReflect.Descriptor instead.
-func (*MarkCellDeletedRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use MarkCellDeletedOrActivatedRequest.ProtoReflect.Descriptor instead.
+func (*MarkCellDeletedOrActivatedRequest) Descriptor() ([]byte, []int) {
 	return file_api_admin_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *MarkCellDeletedRequest) GetData() *MarkCellDeletedRequest_Data {
+func (x *MarkCellDeletedOrActivatedRequest) GetData() *MarkCellDeletedOrActivatedRequest_Data {
 	if x != nil {
 		return x.Data
 	}
 	return nil
 }
 
-type MarkCellDeletedResponse struct {
+type MarkCellDeletedOrActivatedResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *MarkCellDeletedResponse) Reset() {
-	*x = MarkCellDeletedResponse{}
+func (x *MarkCellDeletedOrActivatedResponse) Reset() {
+	*x = MarkCellDeletedOrActivatedResponse{}
 	mi := &file_api_admin_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *MarkCellDeletedResponse) String() string {
+func (x *MarkCellDeletedOrActivatedResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MarkCellDeletedResponse) ProtoMessage() {}
+func (*MarkCellDeletedOrActivatedResponse) ProtoMessage() {}
 
-func (x *MarkCellDeletedResponse) ProtoReflect() protoreflect.Message {
+func (x *MarkCellDeletedOrActivatedResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_api_admin_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -356,8 +357,8 @@ func (x *MarkCellDeletedResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MarkCellDeletedResponse.ProtoReflect.Descriptor instead.
-func (*MarkCellDeletedResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MarkCellDeletedOrActivatedResponse.ProtoReflect.Descriptor instead.
+func (*MarkCellDeletedOrActivatedResponse) Descriptor() ([]byte, []int) {
 	return file_api_admin_proto_rawDescGZIP(), []int{4}
 }
 
@@ -405,27 +406,28 @@ func (x *CreateCellRequest_Data) GetCell() *Cell {
 	return nil
 }
 
-type MarkCellDeletedRequest_Data struct {
+type MarkCellDeletedOrActivatedRequest_Data struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	IsActive      bool                   `protobuf:"varint,2,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *MarkCellDeletedRequest_Data) Reset() {
-	*x = MarkCellDeletedRequest_Data{}
+func (x *MarkCellDeletedOrActivatedRequest_Data) Reset() {
+	*x = MarkCellDeletedOrActivatedRequest_Data{}
 	mi := &file_api_admin_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *MarkCellDeletedRequest_Data) String() string {
+func (x *MarkCellDeletedOrActivatedRequest_Data) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MarkCellDeletedRequest_Data) ProtoMessage() {}
+func (*MarkCellDeletedOrActivatedRequest_Data) ProtoMessage() {}
 
-func (x *MarkCellDeletedRequest_Data) ProtoReflect() protoreflect.Message {
+func (x *MarkCellDeletedOrActivatedRequest_Data) ProtoReflect() protoreflect.Message {
 	mi := &file_api_admin_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -437,16 +439,23 @@ func (x *MarkCellDeletedRequest_Data) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MarkCellDeletedRequest_Data.ProtoReflect.Descriptor instead.
-func (*MarkCellDeletedRequest_Data) Descriptor() ([]byte, []int) {
+// Deprecated: Use MarkCellDeletedOrActivatedRequest_Data.ProtoReflect.Descriptor instead.
+func (*MarkCellDeletedOrActivatedRequest_Data) Descriptor() ([]byte, []int) {
 	return file_api_admin_proto_rawDescGZIP(), []int{3, 0}
 }
 
-func (x *MarkCellDeletedRequest_Data) GetName() string {
+func (x *MarkCellDeletedOrActivatedRequest_Data) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *MarkCellDeletedOrActivatedRequest_Data) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
 }
 
 var File_api_admin_proto protoreflect.FileDescriptor
@@ -463,12 +472,13 @@ const file_api_admin_proto_rawDesc = "" +
 	"\x04data\x18\x01 \x01(\v2,.dopov.p.julian.admin.CreateCellRequest.DataR\x04data\x1a6\n" +
 	"\x04Data\x12.\n" +
 	"\x04cell\x18\x01 \x01(\v2\x1a.dopov.p.julian.admin.CellR\x04cell\"\x14\n" +
-	"\x12CreateCellResponse\"{\n" +
-	"\x16MarkCellDeletedRequest\x12E\n" +
-	"\x04data\x18\x01 \x01(\v21.dopov.p.julian.admin.MarkCellDeletedRequest.DataR\x04data\x1a\x1a\n" +
+	"\x12CreateCellResponse\"\xae\x01\n" +
+	"!MarkCellDeletedOrActivatedRequest\x12P\n" +
+	"\x04data\x18\x01 \x01(\v2<.dopov.p.julian.admin.MarkCellDeletedOrActivatedRequest.DataR\x04data\x1a7\n" +
 	"\x04Data\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"\x19\n" +
-	"\x17MarkCellDeletedResponse*\x8d\x01\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
+	"\tis_active\x18\x02 \x01(\bR\bisActive\"$\n" +
+	"\"MarkCellDeletedOrActivatedResponse*\x8d\x01\n" +
 	"\bCellKind\x12\x19\n" +
 	"\x15CELL_KIND_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bCELL_KIND_WAREHOUSE_STORAGE\x10\x01\x12(\n" +
@@ -480,11 +490,11 @@ const file_api_admin_proto_rawDesc = "" +
 	"\x1eCELL_CONTENT_TYPE_MAIN_PRODUCT\x10\x02\x12'\n" +
 	"#CELL_CONTENT_TYPE_OVERSIZED_PRODUCT\x10\x03\x12'\n" +
 	"#CELL_CONTENT_TYPE_EXPENDABLE_LIQUID\x10\x04\x12!\n" +
-	"\x1dCELL_CONTENT_TYPE_MAIN_LIQUID\x10\x052\xdc\x01\n" +
+	"\x1dCELL_CONTENT_TYPE_MAIN_LIQUID\x10\x052\xfe\x01\n" +
 	"\x05Admin\x12a\n" +
 	"\n" +
-	"CreateCell\x12'.dopov.p.julian.admin.CreateCellRequest\x1a(.dopov.p.julian.admin.CreateCellResponse\"\x00\x12p\n" +
-	"\x0fMarkCellDeleted\x12,.dopov.p.julian.admin.MarkCellDeletedRequest\x1a-.dopov.p.julian.admin.MarkCellDeletedResponse\"\x00B3Z1github.com/dopov-p/julian/internal/pb/admin;adminb\x06proto3"
+	"CreateCell\x12'.dopov.p.julian.admin.CreateCellRequest\x1a(.dopov.p.julian.admin.CreateCellResponse\"\x00\x12\x91\x01\n" +
+	"\x1aMarkCellDeletedOrActivated\x127.dopov.p.julian.admin.MarkCellDeletedOrActivatedRequest\x1a8.dopov.p.julian.admin.MarkCellDeletedOrActivatedResponse\"\x00B3Z1github.com/dopov-p/julian/internal/pb/admin;adminb\x06proto3"
 
 var (
 	file_api_admin_proto_rawDescOnce sync.Once
@@ -501,26 +511,26 @@ func file_api_admin_proto_rawDescGZIP() []byte {
 var file_api_admin_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_api_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_api_admin_proto_goTypes = []any{
-	(CellKind)(0),                       // 0: dopov.p.julian.admin.CellKind
-	(CellContentType)(0),                // 1: dopov.p.julian.admin.CellContentType
-	(*Cell)(nil),                        // 2: dopov.p.julian.admin.Cell
-	(*CreateCellRequest)(nil),           // 3: dopov.p.julian.admin.CreateCellRequest
-	(*CreateCellResponse)(nil),          // 4: dopov.p.julian.admin.CreateCellResponse
-	(*MarkCellDeletedRequest)(nil),      // 5: dopov.p.julian.admin.MarkCellDeletedRequest
-	(*MarkCellDeletedResponse)(nil),     // 6: dopov.p.julian.admin.MarkCellDeletedResponse
-	(*CreateCellRequest_Data)(nil),      // 7: dopov.p.julian.admin.CreateCellRequest.Data
-	(*MarkCellDeletedRequest_Data)(nil), // 8: dopov.p.julian.admin.MarkCellDeletedRequest.Data
+	(CellKind)(0),                                  // 0: dopov.p.julian.admin.CellKind
+	(CellContentType)(0),                           // 1: dopov.p.julian.admin.CellContentType
+	(*Cell)(nil),                                   // 2: dopov.p.julian.admin.Cell
+	(*CreateCellRequest)(nil),                      // 3: dopov.p.julian.admin.CreateCellRequest
+	(*CreateCellResponse)(nil),                     // 4: dopov.p.julian.admin.CreateCellResponse
+	(*MarkCellDeletedOrActivatedRequest)(nil),      // 5: dopov.p.julian.admin.MarkCellDeletedOrActivatedRequest
+	(*MarkCellDeletedOrActivatedResponse)(nil),     // 6: dopov.p.julian.admin.MarkCellDeletedOrActivatedResponse
+	(*CreateCellRequest_Data)(nil),                 // 7: dopov.p.julian.admin.CreateCellRequest.Data
+	(*MarkCellDeletedOrActivatedRequest_Data)(nil), // 8: dopov.p.julian.admin.MarkCellDeletedOrActivatedRequest.Data
 }
 var file_api_admin_proto_depIdxs = []int32{
 	0, // 0: dopov.p.julian.admin.Cell.kind:type_name -> dopov.p.julian.admin.CellKind
 	1, // 1: dopov.p.julian.admin.Cell.content_type:type_name -> dopov.p.julian.admin.CellContentType
 	7, // 2: dopov.p.julian.admin.CreateCellRequest.data:type_name -> dopov.p.julian.admin.CreateCellRequest.Data
-	8, // 3: dopov.p.julian.admin.MarkCellDeletedRequest.data:type_name -> dopov.p.julian.admin.MarkCellDeletedRequest.Data
+	8, // 3: dopov.p.julian.admin.MarkCellDeletedOrActivatedRequest.data:type_name -> dopov.p.julian.admin.MarkCellDeletedOrActivatedRequest.Data
 	2, // 4: dopov.p.julian.admin.CreateCellRequest.Data.cell:type_name -> dopov.p.julian.admin.Cell
 	3, // 5: dopov.p.julian.admin.Admin.CreateCell:input_type -> dopov.p.julian.admin.CreateCellRequest
-	5, // 6: dopov.p.julian.admin.Admin.MarkCellDeleted:input_type -> dopov.p.julian.admin.MarkCellDeletedRequest
+	5, // 6: dopov.p.julian.admin.Admin.MarkCellDeletedOrActivated:input_type -> dopov.p.julian.admin.MarkCellDeletedOrActivatedRequest
 	4, // 7: dopov.p.julian.admin.Admin.CreateCell:output_type -> dopov.p.julian.admin.CreateCellResponse
-	6, // 8: dopov.p.julian.admin.Admin.MarkCellDeleted:output_type -> dopov.p.julian.admin.MarkCellDeletedResponse
+	6, // 8: dopov.p.julian.admin.Admin.MarkCellDeletedOrActivated:output_type -> dopov.p.julian.admin.MarkCellDeletedOrActivatedResponse
 	7, // [7:9] is the sub-list for method output_type
 	5, // [5:7] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

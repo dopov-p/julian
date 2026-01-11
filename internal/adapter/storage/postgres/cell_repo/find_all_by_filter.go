@@ -13,6 +13,7 @@ func (r *Repo) FindAllByFilter(
 	ctx context.Context,
 	filter dto.FindAllCellFilter,
 	pagination dto.Pagination,
+	sorting dto.Sorting,
 ) ([]*model.Cell, error) {
 	query := sq.Select(
 		"id",
@@ -59,12 +60,12 @@ func (r *Repo) FindAllByFilter(
 		}
 	}
 
-	if pagination.OrderBy != nil && *pagination.OrderBy != "" {
-		order := "asc"
-		if pagination.Order != nil {
-			order = string(*pagination.Order)
+	if sorting.OrderBy != nil && *sorting.OrderBy != "" {
+		order := "ASC"
+		if sorting.Order != nil {
+			order = string(*sorting.Order)
 		}
-		query = query.OrderBy(*pagination.OrderBy + " " + order)
+		query = query.OrderBy(*sorting.OrderBy + " " + order)
 	}
 
 	limit := defaultBatchSize

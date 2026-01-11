@@ -8,6 +8,20 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+type TxManager struct {
+	pool *pgxpool.Pool
+}
+
+func NewTxManager(pool *pgxpool.Pool) *TxManager {
+	return &TxManager{
+		pool: pool,
+	}
+}
+
+func (tm *TxManager) WithTx(ctx context.Context, fn func(context.Context) error) error {
+	return WithTx(ctx, tm.pool, fn)
+}
+
 type txKey struct{}
 
 type Querier interface {
