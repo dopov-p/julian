@@ -1,0 +1,166 @@
+version: "2"
+
+linters:
+  # Enable useful linters for Go code quality
+  enable:
+    - errcheck          # Check for unchecked errors
+    - govet             # Reports suspicious constructs (vet)
+    - ineffassign       # Detects ineffectual assignments
+    - staticcheck       # Go static analysis
+    - unused            # Check for unused code
+    - gosec             # Security issues
+    - gocyclo           # Cyclomatic complexity
+    - misspell          # Spelling mistakes
+    - copyloopvar       # Detect loop variable capture (replaces exportloopref)
+    - goconst           # Find repeated strings
+    - gocritic          # The most opinionated Go linter
+    - godot             # Check if comments end in period
+    - prealloc          # Detect slice declarations that could potentially be preallocated
+    - unconvert         # Remove unnecessary type conversions
+    - unparam           # Detect unused function parameters
+    - whitespace        # Detect leading and trailing whitespace
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+    ignore: fmt:.*,io/ioutil:^Read.*
+
+  gocyclo:
+    min-complexity: 15
+
+  govet:
+    enable:
+      - shadow
+      - nilness
+      - fieldalignment
+    disable:
+      - composites
+
+  gosec:
+    excludes:
+      - G104  # Don't fail on unhandled errors (can be noisy)
+      - G204  # Audit use of command execution (might be needed)
+    severity: medium
+
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+      - dupImport # goimports handles this
+      - ifElseChain
+    settings:
+      rangeExprCopy:
+        checkSlice: true
+        checkMap: true
+      rangeValCopy:
+        sizeThreshold: 512
+      underef:
+        skipRecvDeref: true
+
+  godot:
+    scope: declarations
+    exclude:
+      - "^TODO:"
+      - "^NOTE:"
+      - "^BUG:"
+
+  misspell:
+    locale: US
+
+  whitespace:
+    multi-if: false
+    multi-func: false
+
+run:
+  # Timeout for analysis
+  timeout: 5m
+
+  # Which dirs to skip
+  skip-dirs:
+    - vendor
+    - third_party
+    - testdata
+    - internal/pb  # Generated protobuf code
+
+  # Which files to skip
+  skip-files:
+    - ".*\\.pb\\.go$"  # Skip generated protobuf files
+    - ".*\\.pb\\.grpc\\.go$"  # Skip generated gRPC files
+
+  # Build tags
+  build-tags: []
+
+  # Modules download mode
+  modules-download-mode: readonly
+
+  # Concurrency (0 = auto-detect based on CPU cores)
+  concurrency: 0
+
+  # Allow multiple issues per one linter
+  issues-exit-code: 1
+
+  # Include test files
+  tests: true
+
+output:
+  formats:
+    text:
+      path: stdout
+      print-issued-lines: true
+      print-linter-name: true
+      colors: true
+  uniq-by-line: true
+  sort-results: true
+  show-stats: true
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+issues:
+  # Exclude specific issues
+  exclude:
+    # Don't require error checking for certain functions
+    - "Error return value of .((os\\.)?std(out|err)\\..*|.*Close|.*Flush|os\\.Remove(All)?|.*printf?|os\\.(Un)?Setenv). is not checked"
+    # Exclude complexity warnings for main functions
+    - "func `main` is too complex"
+    # Exclude export warnings for protobuf generated code
+    - "exported (func|const|type|var) `[^`]+` should have comment"
+
+  # Exclude issues from specific linters
+  exclude-rules:
+    - path: _test\\.go
+      linters:
+        - errcheck
+        - gosec
+      text: "unchecked error"
+    - path: internal/pb
+      linters:
+        - all
+    - linters:
+        - errcheck
+      text: "Error return value of .(json\\.|yaml\\.).*(Marshal|Unmarshal).* is not checked"
+
+  # Maximum issues count (0 = unlimited)
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+  # Show only new issues
+  new: false
+
+  # Fix found issues if possible
+  fix: false  # Will be controlled by --fix flag
+
+severity:
+  default: error
+  case-sensitive: false
+  rules:
+    - linters:
+        - errcheck
+      severity: error
+    - linters:
+        - misspell
+      severity: warning

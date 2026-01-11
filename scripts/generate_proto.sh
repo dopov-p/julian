@@ -54,4 +54,3 @@ protoc \
     api/cell.proto
 
 echo "gRPC code generated successfully!"
-

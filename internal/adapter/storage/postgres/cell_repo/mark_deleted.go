@@ -7,13 +7,15 @@ import (
 	"github.com/dopov-p/julian/internal/domain/model"
 )
 
-func (r *Repo) SetSellEmpty(ctx context.Context, name string) error {
+func (r *Repo) MarkDeleted(ctx context.Context, name string) error {
+	now := r.timer.NowUTC()
+
 	query := sq.Update(tableName).
-		Set("contents", nil).
-		Set("updated_at", r.timer.NowUTC()).
+		Set("deleted_at", now).
+		Set("updated_at", now).
 		Where(sq.Eq{"name": name}).
 		Where(sq.Eq{"deleted_at": nil}).
-		PlaceholderFormat(sq.Dollar)
+		Where(sq.Eq{"contents": nil})
 
 	sqlQuery, args, err := query.ToSql()
 	if err != nil {

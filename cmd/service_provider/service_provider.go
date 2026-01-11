@@ -17,6 +17,8 @@ type ServiceProvider struct {
 
 	cellUseCase *cell_usecase.UseCase
 
+	txManager *pkg.TxManager
+
 	timer     *pkg.Timer
 	generator *pkg.Generator
 
@@ -44,6 +46,14 @@ func (s *ServiceProvider) getGenerator() *pkg.Generator {
 	}
 
 	return s.generator
+}
+
+func (s *ServiceProvider) getTxManager(ctx context.Context) *pkg.TxManager {
+	if s.txManager == nil {
+		s.txManager = pkg.NewTxManager(s.GetDbCluster(ctx).Conn)
+	}
+
+	return s.txManager
 }
 
 func (s *ServiceProvider) GetConfig() *config.Config {

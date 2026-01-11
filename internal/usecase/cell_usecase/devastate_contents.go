@@ -15,15 +15,15 @@ type DevastateContentsReq struct {
 }
 
 func (u *UseCase) DevastateContents(ctx context.Context, req DevastateContentsReq) error {
-	if err := u.WithTx(ctx, func(txCtx context.Context) error {
-		currentCell, err := u.cellRepo.GetContentsByName(ctx, req.Name)
+	if err := u.txManager.WithTx(ctx, func(txCtx context.Context) error {
+		currentCell, err := u.cellRepo.GetContentsByName(txCtx, req.Name)
 		if err != nil {
 			return fmt.Errorf("cellRepo.GetContentsByName: %w", err)
 		}
 
 		resultContents := u.processDevastation(currentCell.Contents, req.Contents)
 
-		err = u.cellRepo.UpdateContents(ctx, dto.UpdateContentsRequest{
+		err = u.cellRepo.UpdateContents(txCtx, dto.UpdateContentsRequest{
 			ID:       currentCell.ID,
 			Contents: resultContents,
 		})
@@ -33,7 +33,7 @@ func (u *UseCase) DevastateContents(ctx context.Context, req DevastateContentsRe
 
 		return nil
 	}); err != nil {
-		return fmt.Errorf("WithTx: %w", err)
+		return fmt.Errorf("txManager.WithTx: %w", err)
 	}
 
 	return nil
@@ -43,14 +43,9 @@ func (u *UseCase) processDevastation(
 	currentContents []model.CellContents,
 	requestContents []model.CellContents,
 ) []model.CellContents {
-	// Helper to safely extract string from pointer using lo
-	getOrderIDKey := func(orderID *string) string {
-		return lo.FromPtr(orderID)
-	}
-
 	// Helper to create a composite key for matching items
 	createKey := func(item model.CellContents) string {
-		orderID := getOrderIDKey(item.ExternalOrderID)
+		orderID := lo.FromPtr(item.ExternalOrderID)
 		// Pre-allocate with estimated size for better performance
 		key := make([]byte, 0, len(item.SKU)+len(orderID)+1)
 		key = append(key, item.SKU...)

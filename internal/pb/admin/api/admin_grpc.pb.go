@@ -8,6 +8,7 @@ package admin
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -19,8 +20,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Admin_CreateCell_FullMethodName      = "/dopov.p.julian.admin.Admin/CreateCell"
-	Admin_MarkCellDeleted_FullMethodName = "/dopov.p.julian.admin.Admin/MarkCellDeleted"
+	Admin_CreateCell_FullMethodName                 = "/dopov.p.julian.admin.Admin/CreateCell"
+	Admin_MarkCellDeletedOrActivated_FullMethodName = "/dopov.p.julian.admin.Admin/MarkCellDeletedOrActivated"
 )
 
 // AdminClient is the client API for Admin service.
@@ -30,7 +31,7 @@ type AdminClient interface {
 	// Создать ячейку
 	CreateCell(ctx context.Context, in *CreateCellRequest, opts ...grpc.CallOption) (*CreateCellResponse, error)
 	// Пометить ячейку удаленной
-	MarkCellDeleted(ctx context.Context, in *MarkCellDeletedRequest, opts ...grpc.CallOption) (*MarkCellDeletedResponse, error)
+	MarkCellDeletedOrActivated(ctx context.Context, in *MarkCellDeletedOrActivatedRequest, opts ...grpc.CallOption) (*MarkCellDeletedOrActivatedResponse, error)
 }
 
 type adminClient struct {
@@ -51,10 +52,10 @@ func (c *adminClient) CreateCell(ctx context.Context, in *CreateCellRequest, opt
 	return out, nil
 }
 
-func (c *adminClient) MarkCellDeleted(ctx context.Context, in *MarkCellDeletedRequest, opts ...grpc.CallOption) (*MarkCellDeletedResponse, error) {
+func (c *adminClient) MarkCellDeletedOrActivated(ctx context.Context, in *MarkCellDeletedOrActivatedRequest, opts ...grpc.CallOption) (*MarkCellDeletedOrActivatedResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(MarkCellDeletedResponse)
-	err := c.cc.Invoke(ctx, Admin_MarkCellDeleted_FullMethodName, in, out, cOpts...)
+	out := new(MarkCellDeletedOrActivatedResponse)
+	err := c.cc.Invoke(ctx, Admin_MarkCellDeletedOrActivated_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +69,7 @@ type AdminServer interface {
 	// Создать ячейку
 	CreateCell(context.Context, *CreateCellRequest) (*CreateCellResponse, error)
 	// Пометить ячейку удаленной
-	MarkCellDeleted(context.Context, *MarkCellDeletedRequest) (*MarkCellDeletedResponse, error)
+	MarkCellDeletedOrActivated(context.Context, *MarkCellDeletedOrActivatedRequest) (*MarkCellDeletedOrActivatedResponse, error)
 	mustEmbedUnimplementedAdminServer()
 }
 
@@ -82,8 +83,8 @@ type UnimplementedAdminServer struct{}
 func (UnimplementedAdminServer) CreateCell(context.Context, *CreateCellRequest) (*CreateCellResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateCell not implemented")
 }
-func (UnimplementedAdminServer) MarkCellDeleted(context.Context, *MarkCellDeletedRequest) (*MarkCellDeletedResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method MarkCellDeleted not implemented")
+func (UnimplementedAdminServer) MarkCellDeletedOrActivated(context.Context, *MarkCellDeletedOrActivatedRequest) (*MarkCellDeletedOrActivatedResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method MarkCellDeletedOrActivated not implemented")
 }
 func (UnimplementedAdminServer) mustEmbedUnimplementedAdminServer() {}
 func (UnimplementedAdminServer) testEmbeddedByValue()               {}
@@ -124,20 +125,20 @@ func _Admin_CreateCell_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Admin_MarkCellDeleted_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MarkCellDeletedRequest)
+func _Admin_MarkCellDeletedOrActivated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MarkCellDeletedOrActivatedRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AdminServer).MarkCellDeleted(ctx, in)
+		return srv.(AdminServer).MarkCellDeletedOrActivated(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Admin_MarkCellDeleted_FullMethodName,
+		FullMethod: Admin_MarkCellDeletedOrActivated_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AdminServer).MarkCellDeleted(ctx, req.(*MarkCellDeletedRequest))
+		return srv.(AdminServer).MarkCellDeletedOrActivated(ctx, req.(*MarkCellDeletedOrActivatedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -154,8 +155,8 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Admin_CreateCell_Handler,
 		},
 		{
-			MethodName: "MarkCellDeleted",
-			Handler:    _Admin_MarkCellDeleted_Handler,
+			MethodName: "MarkCellDeletedOrActivated",
+			Handler:    _Admin_MarkCellDeletedOrActivated_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

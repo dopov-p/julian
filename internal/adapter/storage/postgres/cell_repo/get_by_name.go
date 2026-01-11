@@ -7,10 +7,11 @@ import (
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/dopov-p/julian/internal/domain/model"
+	"github.com/dopov-p/julian/internal/pkg"
 	"github.com/jackc/pgx/v5"
 )
 
-func (r *Repo) GetByName(ctx context.Context, name string, isDeleted bool) (*model.Cell, error) {
+func (r *Repo) GetByName(ctx context.Context, name string, isActive bool) (*model.Cell, error) {
 	query := sq.Select(
 		"id",
 		"name",
@@ -25,10 +26,17 @@ func (r *Repo) GetByName(ctx context.Context, name string, isDeleted bool) (*mod
 		Where(sq.Eq{"name": name}).
 		PlaceholderFormat(sq.Dollar)
 
-	if isDeleted {
-		query = query.Where(sq.NotEq{"deleted_at": nil})
-	} else {
+	if pkg.HasTx(ctx) {
+		query = query.Suffix("FOR UPDATE")
+	}
+
+	if isActive {
 		query = query.Where(sq.Eq{"deleted_at": nil})
+	} else {
+		query = query.
+			Where(sq.NotEq{"deleted_at": nil}).
+			OrderBy("created_at DESC").
+			Limit(1)
 	}
 
 	sqlQuery, args, err := query.ToSql()
